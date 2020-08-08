@@ -7,10 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
-
-    <!-- Scripts -->
-    <script src="{{ asset('/assets/jquery.min.js') }}"></script>
+    <title>{{ config('app.name', 'Laravel') }} Author Panel</title>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -18,7 +15,20 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <!-- <link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">     -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.css" />
     <link href="{{ asset('/assets/admin_assets/main.css') }}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote.css" rel="stylesheet">
+
+    <!-- Scripts -->
+    <script src="{{ asset('/assets/jquery.min.js') }}"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+
 </head>
 <body>
     <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
@@ -62,42 +72,46 @@
                       <ul class="vertical-nav-menu metismenu">
                           <li class="app-sidebar__heading">Dashboards</li>
                           <li>
-                              <a href="index.html" class="mm-active">
+                              <a id="dashboardLink" href="{{route('author.dashboard')}}">
                                   <i class="metismenu-icon pe-7s-rocket"></i>
                                   Dashboard
                               </a>
                           </li>
                           <li class="app-sidebar__heading">Content</li>
                           <li>
-                              <a href="#">
+                              <a id="postLink" onclick="sidebarMenu__Inner('{{route('author.post.view')}}')" href="javascript:void(0)" />
                                   <i class="metismenu-icon pe-7s-diamond"></i>
                                   Post
                               </a>
                           </li>
                           <li>
-                              <a href="#">
-                                  <i class="metismenu-icon pe-7s-car"></i>
+                              <a id="galeryLink" href="#">
+                                  <i class="metismenu-icon pe-7s-photo"></i>
                                   Galery
                               </a>
                           </li>
                           <li>
-                              <a href="tables-regular.html">
-                                  <i class="metismenu-icon pe-7s-display2"></i>
+                              <a id="videoLink" href="#">
+                                  <i class="metismenu-icon pe-7s-play"></i>
                                   Video
                               </a>
                           </li>
                           <li class="app-sidebar__heading">Settings</li>
                           <li>
-                              <a href="dashboard-boxes.html">
+                              <a id="settingLink" href="#">
                                   <i class="metismenu-icon pe-7s-display2"></i>
                                   Setting
                               </a>
                           </li>
                           <li>
-                              <a href="dashboard-boxes.html">
-                                  <i class="metismenu-icon pe-7s-display2"></i>
-                                  Logout
+                              <a href="{{ route('logout') }}" onclick="event.preventDefault();
+                                            document.getElementById('logout-form').submit();">
+                                  <i class="metismenu-icon pe-7s-power"></i>
+                                  {{ __('Logout') }}
                               </a>
+                              <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                  @csrf
+                              </form>
                           </li>
                       </ul>
                   </div>
@@ -107,8 +121,22 @@
             @yield('content')
         </div>
     </div>
-    <div class="jvectormap-tip"></div>
     <script src="{{ asset('/assets/bootstrap/js/popper.min.js') }}"></script>
     <script src="{{ asset('/assets/admin_assets/assets/scripts/main.js') }}"></script>
+    <script src="{{ asset('/assets/admin_assets/domScripts.js') }}"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote.js"></script>
+    @yield('optionalScript')
+    <script type="text/javascript">
+      $(document).ready(function() {
+         @if(request()->is('author/dashboard'))
+         $('#dashboardLink').toggleClass('mm-active');
+         @elseif(request()->is('author/post') || request()->is('author/post/*'))
+         $('#postLink').toggleClass('mm-active');
+         @elseif(request()->is('author/setting'))
+         var path = '{{request()->path()}}';
+         var strArray = path.split("/");
+         @endif
+      });
+</script>
 </body>
 </html>

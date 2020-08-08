@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Post;
 
 class Author extends Authenticatable
 {
@@ -37,4 +38,14 @@ class Author extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function posts()
+    {
+      return $this->hasMany(Post::class, 'user_id');
+    }
+
+    public function ownsPost(Post $post)
+    {
+      return auth()->id() === $post->user->id;
+    }
 }

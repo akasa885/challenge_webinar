@@ -18,8 +18,8 @@ class CreatePostsTable extends Migration
             $table->unsignedBigInteger("user_id");
             $table->string('title');
             $table->binary('pic_thumbnail')->nullable();
-            $table->string('excerpt');
-            $table->string('content');
+            $table->string('excerpt')->nullable();
+            $table->longText('content');
             $table->integer('status_post')->unsigned();
             $table->unsignedBigInteger('likes')->nullable();
             $table->timestamps();

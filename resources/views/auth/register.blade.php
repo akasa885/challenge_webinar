@@ -5,6 +5,22 @@
 <!-- header end -->
 @section('content')
 <div class="container">
+  <div class="d-flex flex-row justify-content-center mb-3">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-body p-2">
+          <div class="row">
+            <div class="col-md-6 m-0">
+              <a class="bg-blue active" href="{{Route('login')}}">Login</a>
+            </div>
+            <div class="col-md-6 m-0">
+              <a class="bg-blue active" href="{{Route('register')}}"style="">Register</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">

@@ -15,14 +15,20 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'IndexController@index')->name('article');
 
-Route::group(["prefix" => "author", "name" => "author."], function (){
-  Route::get('/', function(){
-    return redirect('author/dashboard');
+Route::prefix('author')->name('author.')->group(function (){
+  Route::get('/', function(){return redirect('author/dashboard');});
+  Route::get('/dashboard', 'Authors\IndexController@index')->middleware('auth')->name('dashboard');
+
+  Route::group(["prefix" => 'post', "as" => 'post.', "middleware" => 'auth'], function (){
+    Route::get('/','Authors\PostingController@viewContentPost')->name('view');
+    Route::get('/user-post-view', 'Authors\PostingController@getAllpost')->middleware('auth')->name('dtb_post');
+    Route::get('/create','Authors\PostingController@createContent')->name('viewForm');
+    Route::post('/create','Authors\PostingController@storeContent')->name('sendForm');
+    Route::get('/edit/{id}','Authors\PostingController@editPosting')->name('editPost');
+    Route::get('/detele/{id}', 'Authors\PostingController@deletePosting')->name('delPost');
   });
-  Route::get('/dashboard',function(){
-    return view('author.dash');
-  });
-  Auth::routes();
+
 });
+  Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');

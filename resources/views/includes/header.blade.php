@@ -22,7 +22,7 @@
                   </a>
                 </li>
                 @guest
-                    @if(request()->is('author/login'))
+                    @if(request()->is('login') or request()->is('register') )
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('article') }}">{{ __('Home') }}</a>
                     </li>
@@ -38,6 +38,9 @@
                         </a>
 
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{{ route('author.dashboard')}}">
+                              {{ __('Author Panel') }}
+                            </a>
                             <a class="dropdown-item" href="{{ route('logout') }}"
                                onclick="event.preventDefault();
                                              document.getElementById('logout-form').submit();">
